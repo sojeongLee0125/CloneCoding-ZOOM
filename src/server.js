@@ -19,26 +19,20 @@ const sockets = [];
 
 wss.on("connection", (socket) => {
     sockets.push(socket);
+    socket["nickname"] = "Anonymous";
     console.log('Connected to the Browser!!');
     socket.on("close", () => console.log("Disconnected from the Browser!!"));
     socket.on("message", (message) => {
         const messageString = message.toString('utf8');
-        sockets.forEach(aSocket => aSocket.send(messageString));
+        const parsed = JSON.parse(messageString);
+        switch (parsed.type){
+            case "new_message":
+                sockets.forEach(aSocket => aSocket.send(`${socket.nickname}: ${parsed.payload}`));
+            case "nickname":
+                socket["nickname"] = parsed.payload;
+        }
     });
 });
 
 server.listen(3000, handleListen);
-
-
-{
-    type: "message",
-    payload: "hello"
-
-}
-
-{
-    type: "nickname",
-    payload: "js"
-
-}
 
