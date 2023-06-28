@@ -8,10 +8,12 @@ html(lang="en")
         <link rel="stylesheet" href="https://unpkg.com/mvp.css"> 
     body 
         header 
-            h1 NOOM
+            h1 화상회의실
         main
             div#myStream
                 video#myFace(autoplay, playsinline, width="400", height="400")
                 button#mute 음소거
                 button#camera 카메라 끄기
+                select#cameras
+                    option(value="device")
         script(src="/public/js/app.js")
